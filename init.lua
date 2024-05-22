@@ -415,10 +415,16 @@ require('lazy').setup({
             -- i = { ['<c-enter>'] = 'to_fuzzy_refine' },
             i = {
               ['<esc>'] = require('telescope.actions').close,
+              ['<C-o>'] = require('telescope.actions.layout').toggle_preview,
             },
           },
         },
         -- pickers = {}
+        pickers = {
+          buffers = {
+            sort_lastused = true,
+          },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
