@@ -29,7 +29,7 @@ return {
     },
     config = function() end,
     init = function()
-      --      vim.cmd.colorscheme 'jellybeans-nvim'
+      vim.cmd.colorscheme 'jellybeans-nvim'
       -- You can configure highlights by doing something like:
       -- vim.cmd.hi 'Type gui=none'
       local lush = require 'lush'
@@ -40,7 +40,9 @@ return {
       local spec = lush.extends({ jb }).with(function()
         return {
           -- make the telescope popup look like the pmenu
-          FlashLabel { cterm = 'bold', gui = 'bold', fg = hsl '#a6e3a2', bg = hsl '#1e1e2f' },
+          -- FlashLabel { cterm = 'bold', gui = 'bold', fg = hsl '#a6e3a2', bg = hsl '#1e1e2f' },
+
+          FlashLabel { cterm = 'bold', gui = 'bold', bg = hsl(130, 100, 70), fg = hsl(1, 100, 50) }, -- |:substitute| replacement text highlighting
           Substitute { bg = hsl(208, 100, 80), fg = hsl(1, 100, 80) }, -- |:substitute| replacement text highlighting
           -- Search { bg = hsl(208, 100, 80), fg = hsl(1, 100, 80) }, -- |:substitute| replacement text highlighting
           Type { fg = hsl '#ffb964', gui = 'none' }, -- (preferred) int, long, char, etc.
@@ -70,7 +72,7 @@ return {
     'rebelot/kanagawa.nvim',
     priority = 1000,
     init = function()
-      vim.cmd.colorscheme 'kanagawa-dragon'
+      -- vim.cmd.colorscheme 'kanagawa-dragon'
     end,
   },
 }
