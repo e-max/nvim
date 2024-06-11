@@ -441,6 +441,15 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
+      vim.keymap.set('n', '<leader>r', function()
+        local word_under_cursor = vim.fn.expand '<cword>'
+        local current_filetype = vim.bo.filetype
+        builtin.live_grep {
+          default_text = word_under_cursor,
+          type_filter = current_filetype,
+        }
+      end, { desc = '[R] Rg word under cursor' })
+
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
         -- You can pass additional configuration to Telescope to change the theme, layout, etc.
