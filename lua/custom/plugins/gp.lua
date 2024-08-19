@@ -1,5 +1,6 @@
 return {
-  'robitx/gp.nvim',
+  dir = '~/work/gp.nvim/',
+  --'robitx/gp.nvim',
   config = function()
     local conf = {
       log_sensitive = true,
