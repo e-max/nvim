@@ -743,7 +743,8 @@ require('lazy').setup({
   },
 
   { -- Autocompletion
-    'hrsh7th/nvim-cmp',
+    'yioneko/nvim-cmp',
+    branch = 'perf-up',
     event = 'InsertEnter',
     dependencies = {
       -- Snippet Engine & its associated nvim-cmp source
