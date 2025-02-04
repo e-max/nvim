@@ -1,0 +1,122 @@
+
+snippet trace
+  trace!("${1}");
+
+snippet debug
+  debug!("${1}");
+
+snippet info
+  info!("${1}");
+
+snippet warn
+  warn!("${1}");
+
+snippet error,
+  error!("${1}");
+
+
+snippet trace,
+  trace!("${1} = {:?}", $1);
+
+snippet debug,
+  debug!("${1} = {:?}", $1);
+
+snippet info,
+  info!("${1} = {:?}", $1);
+
+snippet warn,
+  warn!("${1} = {:?}", $1);
+
+snippet error,
+  error!("${1} = {:?}", $1);
+
+snippet ff
+  println!("${1} = {:?}", $1);
+
+
+#сниппеты цветов
+#
+# Как они вообще работают
+# Есть простая 16 цветная палитра , и есть 256 цветная
+# для 16 цветной
+# \x1B[31;1m ${1:text}\x1B[0m
+# здесь 31 означает цвет ( они могут быть от 30 до 37 );
+# а 1 - доп параметр. Например 1 - означает bold . Еще там могут быть всякие мигания и проч ерунда
+#
+# для 256 палитры
+# \x1B[38;5;12;1m text %s \x1B[0m
+# 38;5  - означают 256 цветную палитру
+# 12 - цвет  ( могут быть от 1 до 256);
+# 1 - доп параметры ( тут 1 это болд );
+#
+
+
+snippet ered
+  "\x1B[31;1m ${1:text}\x1B[0m"
+
+snippet egreen
+  "\x1B[32;1m ${1:text}\x1B[0m"
+
+snippet eyellow
+  "\x1B[33;1m ${1:text}\x1B[0m"
+
+snippet eblue
+  "\x1B[34;1m ${1:text}\x1B[0m"
+
+snippet emagenta
+  "\x1B[35;1m ${1:text}\x1B[0m"
+
+snippet ecyan
+  "\x1B[36;1m ${1:text}\x1B[0m"
+
+snippet ewhite
+  "\x1B[37;1m ${1:text}\x1B[0m"
+
+
+
+
+
+snippet pred,
+  println!("\x1B[31;1m ${1}\x1B[0m = {:?}", $1);
+
+snippet pgreen,
+  println!("\x1B[32;1m ${1}\x1B[0m = {:?}", $1);
+
+snippet pyellow,
+  println!("\x1B[33;1m ${1}\x1B[0m = {:?}", $1);
+
+snippet pblue,
+  println!("\x1B[34;1m ${1}\x1B[0m = {:?}", $1);
+
+snippet pmagenta,
+  println!("\x1B[35;1m ${1}\x1B[0m = {:?}", $1);
+
+snippet pcyan,
+  println!("\x1B[36;1m ${1}\x1B[0m = {:?}", $1);
+
+snippet pwhite,
+  println!("\x1B[37;1m ${1}\x1B[0m = {:?}", $1);
+
+# комбинация цветов и fn
+
+snippet pred
+  println!("\x1B[31;1m ${1}\x1B[0m");
+
+snippet pgreen
+  println!("\x1B[32;1m ${1}\x1B[0m");
+
+snippet pyellow
+  println!("\x1B[33;1m ${1}\x1B[0m");
+
+snippet pblue
+  println!("\x1B[34;1m ${1}\x1B[0m");
+
+snippet pmagenta
+  println!("\x1B[35;1m ${1}\x1B[0m");
+
+snippet pcyan
+  println!("\x1B[36;1m ${1}\x1B[0m");
+
+snippet pwhite
+  println!("\x1B[37;1m ${1}\x1B[0m");
+
