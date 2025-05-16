@@ -13,7 +13,7 @@ return {
 
             assist = {
               importMergeBehavior = 'last',
-              importPrefix = 'by_self',
+              importPrefix = 'by_crate',
             },
             cargo = {
               loadOutDirsFromCheck = true,
