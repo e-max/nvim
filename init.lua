@@ -868,6 +868,28 @@ require('lazy').setup({
 
         -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
         --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
+
+        -- ['<C-j>'] = {
+        --   function(cmp)
+        --     if require('luasnip').expand_or_locally_jumpable() then
+        --       require('luasnip').expand_or_jump()
+        --     end
+        --   end,
+        -- },
+        -- ['<Tab>'] = {
+        --   function(cmp)
+        --     if require('luasnip').expand_or_locally_jumpable() then
+        --       require('luasnip').expand_or_jump()
+        --     end
+        --   end,
+        -- },
+        -- ['<C-k>'] = {
+        --   function(cmp)
+        --     if require('luasnip').locally_jumpable(-1) then
+        --       require('luasnip').jump(-1)
+        --     end
+        --   end,
+        -- },
       },
 
       appearance = {
