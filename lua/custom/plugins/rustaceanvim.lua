@@ -12,8 +12,8 @@ return {
           ['rust-analyzer'] = {
 
             assist = {
-              importMergeBehavior = 'last',
-              importPrefix = 'by_crate',
+              importMergeBehavior = 'crate',
+              importPrefix = 'crate',
             },
             cargo = {
               loadOutDirsFromCheck = true,
