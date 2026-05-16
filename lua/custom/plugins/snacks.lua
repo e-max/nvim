@@ -1,16 +1,17 @@
 vim.pack.add { 'https://github.com/folke/snacks.nvim' }
 
 require('snacks').setup {
-  picker = {},
-  explorer = {},
-  win = {
-    -- input window
-    input = {
-      keys = {
-        ['<Esc>'] = { 'close', mode = { 'n', 'i' } },
+  picker = {
+    win = {
+      -- input window
+      input = {
+        keys = {
+          ['<Esc>'] = { 'close', mode = { 'n', 'i' } },
+        },
       },
     },
   },
+  explorer = {},
 }
 
 do
