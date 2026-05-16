@@ -96,10 +96,12 @@ do
   -- See `:help mapleader`
   --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
   vim.g.mapleader = ' '
-  vim.g.maplocalleader = ' '
+  vim.g.maplocalleader = '\\'
 
   -- Set to true if you have a Nerd Font installed and selected in the terminal
-  vim.g.have_nerd_font = false
+  vim.g.have_nerd_font = true
+
+  vim.o.termguicolors = true
 
   -- [[ Setting options ]]
   --  See `:help vim.o`
@@ -172,12 +174,20 @@ do
   -- See `:help 'confirm'`
   vim.o.confirm = true
 
+  vim.o.wildmode = 'longest:full,full'
+
   -- [[ Basic Keymaps ]]
   --  See `:help vim.keymap.set()`
 
   -- Clear highlights on search when pressing <Esc> in normal mode
   --  See `:help hlsearch`
   vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+
+  -- ; is equal to :
+  vim.keymap.set('n', ';', ':')
+
+  vim.keymap.set('v', '<', '<gv')
+  vim.keymap.set('v', '>', '>gv')
 
   -- Diagnostic Config & Keymaps
   --  See `:help vim.diagnostic.Opts`
@@ -356,8 +366,8 @@ do
     signs = {
       add = { text = '+' }, ---@diagnostic disable-line: missing-fields
       change = { text = '~' }, ---@diagnostic disable-line: missing-fields
-      delete = { text = '_' }, ---@diagnostic disable-line: missing-fields
-      topdelete = { text = '‾' }, ---@diagnostic disable-line: missing-fields
+      delete = { text = '≚' }, ---@diagnostic disable-line: missing-fields
+      topdelete = { text = '≙' }, ---@diagnostic disable-line: missing-fields
       changedelete = { text = '~' }, ---@diagnostic disable-line: missing-fields
     },
   }
@@ -424,7 +434,20 @@ do
   -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
   -- - sd'   - [S]urround [D]elete [']quotes
   -- - sr)'  - [S]urround [R]eplace [)] [']
-  require('mini.surround').setup()
+  require('mini.surround').setup {
+    mappings = {
+      add = '\\sa', -- Add surrounding in Normal and Visual modes
+      delete = '\\sd', -- Delete surrounding
+      find = '\\sf', -- Find surrounding (to the right)
+      find_left = '\\sF', -- Find surrounding (to the left)
+      highlight = '\\sh', -- Highlight surrounding
+      replace = '\\sr', -- Replace surrounding
+      update_n_lines = '\\sn', -- Update `n_lines`
+
+      suffix_last = 'l', -- Suffix to search with "prev" method
+      suffix_next = 'n', -- Suffix to search with "next" method
+    },
+  }
 
   -- Simple and easy statusline.
   --  You could remove this setup call if you don't like it,
@@ -448,6 +471,8 @@ end
 -- Telescope setup, keymaps, LSP picker mappings
 -- ============================================================
 do
+  -- my_config uses Snacks picker from lua/custom/plugins/snacks.lua instead.
+  if false then
   -- [[ Fuzzy Finder (files, lsp, etc) ]]
   --
   -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -576,6 +601,7 @@ do
 
   -- Shortcut for searching your Neovim configuration files
   vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = '[S]earch [N]eovim files' })
+  end
 end
 
 -- ============================================================
@@ -774,23 +800,20 @@ do
   require('conform').setup {
     notify_on_error = false,
     format_on_save = function(bufnr)
-      -- You can specify filetypes to autoformat on save here:
-      local enabled_filetypes = {
-        -- lua = true,
-        -- python = true,
-      }
-      if enabled_filetypes[vim.bo[bufnr].filetype] then
-        return { timeout_ms = 500 }
-      else
+      -- Disable format-on-save for languages that do not have a well-standardized coding style.
+      local disable_filetypes = { c = true, cpp = true }
+      if disable_filetypes[vim.bo[bufnr].filetype] then
         return nil
+      else
+        return {
+          timeout_ms = 500,
+          lsp_format = 'fallback',
+        }
       end
     end,
-    default_format_opts = {
-      lsp_format = 'fallback', -- Use external formatters if configured below, otherwise use LSP formatting. Set to `false` to disable LSP formatting entirely.
-    },
     -- You can also specify external formatters in here.
     formatters_by_ft = {
-      -- rust = { 'rustfmt' },
+      lua = { 'stylua' },
       -- Conform can also run multiple formatters sequentially
       -- python = { "isort", "black" },
       --
@@ -799,7 +822,7 @@ do
     },
   }
 
-  vim.keymap.set({ 'n', 'v' }, '<leader>f', function() require('conform').format { async = true } end, { desc = '[F]ormat buffer' })
+  vim.keymap.set({ 'n', 'v' }, '<localleader>f', function() require('conform').format { async = true, lsp_format = 'fallback' } end, { desc = '[F]ormat buffer' })
 end
 
 -- ============================================================
@@ -820,6 +843,8 @@ do
   --
   -- vim.pack.add { gh 'rafamadriz/friendly-snippets' }
   -- require('luasnip.loaders.from_vscode').lazy_load()
+  vim.pack.add { gh 'honza/vim-snippets' }
+  require('luasnip.loaders.from_snipmate').lazy_load()
 
   -- [[ Autocomplete Engine ]]
   vim.pack.add { { src = gh 'saghen/blink.cmp', version = vim.version.range '1.*' } }
@@ -898,7 +923,7 @@ do
   vim.pack.add { { src = gh 'nvim-treesitter/nvim-treesitter', version = 'main' } }
 
   -- Ensure basic parsers are installed
-  local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+  local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'rust', 'vim', 'vimdoc' }
   require('nvim-treesitter').install(parsers)
 
   ---@param buf integer
@@ -970,7 +995,7 @@ do
   -- NOTE: You can add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- require 'custom.plugins'
+  require 'custom.plugins'
 end
 
 -- The line beneath this is called `modeline`. See `:help modeline`
